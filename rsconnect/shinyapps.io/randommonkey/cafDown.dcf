@@ -1,0 +1,12 @@
+name: cafDown
+title: cafDown
+username:
+account: randommonkey
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 368160
+bundleId: 1452683
+url: https://randommonkey.shinyapps.io/cafDown/
+when: 1530115622.88903
+asMultiple: FALSE
+asStatic: FALSE
