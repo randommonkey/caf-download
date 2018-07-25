@@ -14,68 +14,84 @@ shinyServer(function(input, output, session){
         confFile$detalle[z], '<br/>',
         '<b>Fuente: </b>',confFile$fuente[z] 
       ))),
+      #tags$button(id = confFile$archivo[z], 'Descarga los datos', class="bla", type = "button"),
       div(class = "SpaceDat",
       tags$button(id = confFile$archivo[z], onclick="displayResult()", class="needed fa fa-search", type = "button", 'Vista Previa'),
-      downloadButton(confFile$archivo[z], 'Descarga los datos')))
+      HTML(paste0('<a target="_blank" href=', confFile$vinculo[z], '>
+                  <button type="button" class="bla">
+                    <span class="glyphicon glyphicon-cloud-download"></span> Descarga los datos
+                  </button>
+       </a>'
       )
-      
+    )
+      )
+      )
+      )
     })
     
   })
   
+  # lapply(1:length(confFile$archivo), function(z) {
+  #   input[[confFile$archivo[z]]]})
   
-  observe({
-    lapply(1:length(confFile$archivo), function(z) {
-      output[[confFile$archivo[z]]] <- downloadHandler(
-        paste0(confFile$archivo[z],'.zip'),
-        content = function(file) {
-        if (confFile$extension[z] == 'csv') {
-          if (confFile$diccionario[z] == 'si') {
-              dir.create(tmp <- tempfile())
-              df <- read_csv(paste0('data/allData/',confFile$archivo[z],'_data.csv'))
-              dic <- read_csv(paste0('data/allData/',confFile$archivo[z],'_dic.csv'))
-              write_csv(df, file.path(tmp, paste0(confFile$archivo[z],".csv")), na = '')
-              export(df, file.path(tmp, paste0(confFile$archivo[z], ".xlsx")))
-              write_csv(dic, file.path(tmp, paste0(confFile$archivo[z],"_dic.csv")), na = '')
-            } else {
-              dir.create(tmp <- tempfile())
-              df <- read_csv(paste0('data/allData/',confFile$archivo[z],'_data.csv'))
-              export(df, file.path(tmp, paste0(confFile$archivo[z], ".xlsx")))
-              write_csv(df, file.path(tmp, paste0(confFile$archivo[z], ".csv")), na = '')
-            }
-        }
-      if (confFile$extension[z] == 'json') {
-          dir.create(tmp <- tempfile())
-          json_file <- jsonlite::read_json(paste0('data/allData/', confFile$archivo[z],'_data.json'))
-          json_file <- rjson::toJSON(json_file)
-          writeLines(json_file, file.path(tmp, paste0(confFile$archivo[z], ".json")))
-      }
-      if (confFile$extension[z] == 'N-A') {
-        if (confFile$diccionario[z] == 'si') {
-          dir.create(tmp <- tempfile())
-          df <- read_csv(paste0('data/allData/',confFile$archivo[z],'_data.csv'))
-          dic <- read_csv(paste0('data/allData/',confFile$archivo[z],'_dic.csv'))
-          json_file <- jsonlite::read_json(paste0('data/allData/', confFile$archivo[z],'_data.json'))
-          json_file <- rjson::toJSON(json_file)
-          writeLines(json_file, file.path(tmp, "data_filter.json"))
-          write_csv(df, file.path(tmp, "data_filter.csv"), na = '')
-          export(df, file.path(tmp, "data_filter.xlsx"))
-          write_csv(dic, file.path(tmp, "dic_filter.csv"), na = '')
-        } else {
-          dir.create(tmp <- tempfile())
-          df <- read_csv(paste0('data/allData/',confFile$archivo[z],'_data.csv'))
-          json_file <- jsonlite::read_json(paste0('data/allData/', confFile$archivo[z],'_data.json'))
-          json_file <- rjson::toJSON(json_file)
-          writeLines(json_file, file.path(tmp, paste0(confFile$archivo[z], ".json")))
-          export(df, file.path(tmp, paste0(confFile$archivo[z], ".xlsx")))
-          write_csv(df, file.path(tmp, paste0(confFile$archivo[z], ".csv")), na = '')
-        }
-      }
-          zip(file, tmp)
-        }
-      )   
-    })
-  })
+  # observeEvent(
+  #   input$accidentes,{
+  #   a("www.google.com",target="_blank")
+  # })
+  
+  # 
+  # observe({
+  #   lapply(1:length(confFile$archivo), function(z) {
+  #     output[[confFile$archivo[z]]] <- downloadHandler(
+  #       paste0(confFile$archivo[z],'.zip'),
+  #       content = function(file) {
+  #       if (confFile$extension[z] == 'csv') {
+  #         if (confFile$diccionario[z] == 'si') {
+  #             dir.create(tmp <- tempfile())
+  #             df <- read_csv(paste0('data/allData/',confFile$archivo[z],'_data.csv'))
+  #             dic <- read_csv(paste0('data/allData/',confFile$archivo[z],'_dic.csv'))
+  #             write_csv(df, file.path(tmp, paste0(confFile$archivo[z],".csv")), na = '')
+  #             export(df, file.path(tmp, paste0(confFile$archivo[z], ".xlsx")))
+  #             write_csv(dic, file.path(tmp, paste0(confFile$archivo[z],"_dic.csv")), na = '')
+  #           } else {
+  #             dir.create(tmp <- tempfile())
+  #             df <- read_csv(paste0('data/allData/',confFile$archivo[z],'_data.csv'))
+  #             export(df, file.path(tmp, paste0(confFile$archivo[z], ".xlsx")))
+  #             write_csv(df, file.path(tmp, paste0(confFile$archivo[z], ".csv")), na = '')
+  #           }
+  #       }
+  #     if (confFile$extension[z] == 'json') {
+  #         dir.create(tmp <- tempfile())
+  #         json_file <- jsonlite::read_json(paste0('data/allData/', confFile$archivo[z],'_data.json'))
+  #         json_file <- rjson::toJSON(json_file)
+  #         writeLines(json_file, file.path(tmp, paste0(confFile$archivo[z], ".json")))
+  #     }
+  #     if (confFile$extension[z] == 'N-A') {
+  #       if (confFile$diccionario[z] == 'si') {
+  #         dir.create(tmp <- tempfile())
+  #         df <- read_csv(paste0('data/allData/',confFile$archivo[z],'_data.csv'))
+  #         dic <- read_csv(paste0('data/allData/',confFile$archivo[z],'_dic.csv'))
+  #         json_file <- jsonlite::read_json(paste0('data/allData/', confFile$archivo[z],'_data.json'))
+  #         json_file <- rjson::toJSON(json_file)
+  #         writeLines(json_file, file.path(tmp, "data_filter.json"))
+  #         write_csv(df, file.path(tmp, "data_filter.csv"), na = '')
+  #         export(df, file.path(tmp, "data_filter.xlsx"))
+  #         write_csv(dic, file.path(tmp, "dic_filter.csv"), na = '')
+  #       } else {
+  #         dir.create(tmp <- tempfile())
+  #         df <- read_csv(paste0('data/allData/',confFile$archivo[z],'_data.csv'))
+  #         json_file <- jsonlite::read_json(paste0('data/allData/', confFile$archivo[z],'_data.json'))
+  #         json_file <- rjson::toJSON(json_file)
+  #         writeLines(json_file, file.path(tmp, paste0(confFile$archivo[z], ".json")))
+  #         export(df, file.path(tmp, paste0(confFile$archivo[z], ".xlsx")))
+  #         write_csv(df, file.path(tmp, paste0(confFile$archivo[z], ".csv")), na = '')
+  #       }
+  #     }
+  #         zip(file, tmp)
+  #       }
+  #     )   
+  #   })
+  # })
   
   
   output$showData <- renderPrint({#renderTable({

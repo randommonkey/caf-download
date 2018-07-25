@@ -79,6 +79,11 @@ button:hover {
   transform: translateX(-50%);
   z-index: 10000;
 }
+
+.bla{
+  width: max-content;
+color: #000;
+}
 "
 
 
