@@ -17,7 +17,7 @@ shinyServer(function(input, output, session){
       #tags$button(id = confFile$archivo[z], 'Descarga los datos', class="bla", type = "button"),
       div(class = "SpaceDat",
       tags$button(id = confFile$archivo[z], onclick="displayResult()", class="needed fa fa-search", type = "button", 'Vista Previa'),
-      HTML(paste0('<a target="_blank" href=', confFile$vinculo[z], '>
+      HTML(paste0('<a target="_blank" href=', paste0('http://data.datos-transporte.org.s3.amazonaws.com/download/',confFile$archivo[z], '.zip'), '>
                   <button type="button" class="bla">
                     <span class="glyphicon glyphicon-cloud-download"></span> Descarga los datos
                   </button>
